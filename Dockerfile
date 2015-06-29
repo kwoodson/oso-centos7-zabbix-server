@@ -3,7 +3,8 @@
 # /usr/local/bin/start.sh will then start zabbix
 # Default login:password to Zabbix is Admin:zabbix
 
-FROM oso-centos7-ops-base:latest
+#FROM oso-centos7-ops-base:latest
+FROM 172.30.27.108:5000/kwoodson/oso-centos7-ops-base
 
 # Lay down the zabbix repository
 RUN yum clean metadata && \
