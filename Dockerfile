@@ -5,8 +5,7 @@
 
 #FROM oso-centos7-ops-base:latest
 #FROM 172.30.27.108:5000/kwoodson/oso-centos7-ops-base
-#FROM 172.30.100.141:5000/monitoring/oso-centos7-ops-base
-FROM monitoring/oso-centos7-ops-base
+FROM 172.30.100.141:5000/monitoring/oso-centos7-ops-base
 
 # Lay down the zabbix repository
 RUN yum clean metadata && \
