@@ -3,6 +3,10 @@
 echo
 echo 'Ensure database exists.'
 echo '---------------'
+for i in $(seq 1 10000); do
+  sleep 10
+done
+
 /root/zabbix/createdb.sh
 echo
 
