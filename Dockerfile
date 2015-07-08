@@ -20,6 +20,7 @@ RUN yum install -y zabbix-server-mysql zabbix-sender crontabs mariadb && \
 EXPOSE 10050
 EXPOSE 10051
 
+RUN chmod +777 /var/log/zabbix/
 # Lay down zabbix conf
 ADD zabbix/conf/zabbix_server.conf /etc/zabbix/
 
