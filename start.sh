@@ -11,7 +11,12 @@ echo
 #done
 
 echo
-echo 'Starting crond'
+echo 'Starting zabbix'
 echo '---------------'
-/usr/sbin/crond -n
+/usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
 echo
+
+while true; do
+  sleep 5
+done
+
