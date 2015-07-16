@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+sed -ri -e "s/^DBUser=.*/DBUser=${MYSQL_USER}/g" \
+        -e "s/^DBPassword=.*/DBPassword=${MYSQL_PASSWORD}/g" \
+        -e "s/^DBHOst=.*/DBHost=${MYSQL_HOST}/g" zabbix/conf/zabbix_server.conf
+
 echo
 echo 'Ensure database exists.'
 echo '---------------'
