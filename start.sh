@@ -15,14 +15,14 @@ echo
 echo
 echo 'Clean up zabbix templates'
 echo '---------------'
-ansible-playbooks /root/ansible/playbooks/clean_zabbix.yml
+ansible-playbook /root/ansible/playbooks/clean_zabbix.yml
 echo
 
 # Create the heartbeat and os linux templates along with items
 echo
 echo 'Create zabbix templates'
 echo '---------------'
-ansible-playbooks /root/ansible/playbooks/setup_zabbix.yml
+ansible-playbook /root/ansible/playbooks/setup_zabbix.yml
 echo
 
 echo

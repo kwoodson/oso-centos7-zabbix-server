@@ -10,16 +10,16 @@ g_template_heartbeat:
       name: Template Heartbeat
   zitems:
   - name: Heartbeat Ping
-    hostid: 
-    key_: heartbeat.ping
+    hostid:
+    key_: host.ping
     type: 2
     value_type: 1
     output: extend
     search:
-      key_: heartbeat.ping
+      key_: host.ping
   ztriggers:
   - description: 'Heartbeat.ping has failed on {HOST.NAME}'
-    expression: '{Template Heartbeat:heartbeat.ping.last()}<>0'
+    expression: '{Template Heartbeat:host.ping.last()}<>0'
     priority: 3
     searchWildcardsEnabled: True
     search:
