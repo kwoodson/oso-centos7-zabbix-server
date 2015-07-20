@@ -17,14 +17,6 @@ g_template_heartbeat:
     output: extend
     search:
       key_: heartbeat.ping
-  - name: Thomas is right kenny
-    output: extend
-    hostid: 
-    key_: heartbeat.tirk
-    type: 2
-    value_type: 0
-    search:
-      key_: heartbeat.tirk
   ztriggers:
   - description: 'Heartbeat.ping has failed on {HOST.NAME}'
     expression: '{Template Heartbeat:heartbeat.ping.last()}<>0'
