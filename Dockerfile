@@ -20,7 +20,7 @@ RUN yum install -y zabbix-server-mysql zabbix-agent zabbix-sender zabbix-agent c
 EXPOSE 10050
 EXPOSE 10051
 
-RUN chmod -R 777  /etc/passwd /root /etc/openshift_tools /var/run/zabbix /var/log/zabbix/ /etc/zabbix/
+RUN chmod -R 777  /etc/passwd /root /etc/ansible /var/run/zabbix /var/log/zabbix/ /etc/zabbix/
 
 
 # Lay down zabbix conf
