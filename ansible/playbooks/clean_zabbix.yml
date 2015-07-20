@@ -33,7 +33,7 @@
         search:
           host: 'Template App Zabbix Server'
     register: templ_zabbix_server
-    
+
   - zbxapi:
       server: "{{ g_zserver }}"
       user: "{{ g_zuser }}"
@@ -55,7 +55,7 @@
     register: templates
 
   - debug: var=templ_heartbeat.results
-  
+
   - zbxapi:
       server: "{{ g_zserver }}"
       user: "{{ g_zuser }}"
