@@ -43,4 +43,4 @@ CMD /usr/local/bin/start.sh
 # Make the container work more consistently in and out of openshift
 # BE CAREFUL!!! If you change these, you may bloat the image! Use 'docker history' to see the size!
 RUN time chmod -R o+rwX /boot /dev /etc /home /media /mnt /opt /root /run /srv /var
-RUN chmod -R 777  /etc/passwd
+RUN chmod -R 777  /etc/passwd /etc/zabbix
