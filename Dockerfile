@@ -3,8 +3,6 @@
 # /usr/local/bin/start.sh will then start zabbix
 # Default login:password to Zabbix is Admin:zabbix
 
-#FROM oso-centos7-ops-base:latest
-#FROM 172.30.27.108:5000/kwoodson/oso-centos7-ops-base
 FROM oso-rhel7-ops-base:latest
 
 # Lay down the zabbix repository
@@ -13,15 +11,11 @@ RUN yum clean metadata && \
     yum clean all
 
 # Install zabbix from zabbix repo
-RUN yum install -y zabbix-server-mysql zabbix-agent zabbix-sender zabbix-agent crontabs mariadb && \
+RUN yum install -y zabbix-server-mysql zabbix-agent zabbix-sender crontabs mariadb && \
     yum -y update && \
     yum clean all
 
-EXPOSE 10050
-EXPOSE 10051
-
-RUN chmod -R 777  /etc/passwd /root /etc/ansible /var/run/zabbix /var/log/zabbix/ /etc/zabbix/
-
+EXPOSE 10050 10051
 
 # Lay down zabbix conf
 ADD zabbix/conf/zabbix_server.conf /etc/zabbix/
@@ -36,6 +30,7 @@ ADD zabbix/db_create/createdb.sh /root/zabbix/
 ADD zabbix/db_create/create_zabbix.sql /root/zabbix/
 
 # Add crontab for root
+# Re-enable once we figure out how to run cron inside of openshift.
 #ADD cronroot /var/spool/cron/root
 
 # Add ansible playbooks
@@ -44,3 +39,8 @@ ADD ansible /root/ansible/
 # Start mysqld, zabbix, and apache
 ADD start.sh /usr/local/bin/
 CMD /usr/local/bin/start.sh
+
+# Make the container work more consistently in and out of openshift
+# BE CAREFUL!!! If you change these, you may bloat the image! Use 'docker history' to see the size!
+RUN time chmod -R o+rwX /boot /dev /etc /home /media /mnt /opt /root /run /srv /var
+RUN chmod -R 777  /etc/passwd

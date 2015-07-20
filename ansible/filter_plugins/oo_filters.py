@@ -14,6 +14,28 @@ class FilterModule(object):
     ''' Custom ansible filters '''
 
     @staticmethod
+    def oo_set_zbx_trigger_triggerid(item, trigger_results):
+        '''Set zabbix trigger id from trigger results
+        '''
+        if isinstance(trigger_results, list):
+            item['triggerid'] = trigger_results[0]['triggerid']
+            return item
+
+        item['triggerid'] = trigger_results['triggerids'][0]
+        return item
+
+    @staticmethod
+    def oo_set_zbx_item_hostid(item, template_results):
+        ''' Set zabbix host id from template results
+        '''
+        if isinstance(template_results, list):
+            item['hostid'] = template_results[0]['templateid']
+            return item
+
+        item['hostid'] = template_results['templateids'][0]
+        return item
+
+    @staticmethod
     def oo_pdb(arg):
         ''' This pops you into a pdb instance where arg is the data passed in
             from the filter.
@@ -21,6 +43,13 @@ class FilterModule(object):
         '''
         pdb.set_trace()
         return arg
+
+    @staticmethod
+    def oo_len(arg):
+        ''' This returns the length of the argument
+            Ex: "{{ hostvars | oo_len }}"
+        '''
+        return len(arg)
 
     @staticmethod
     def get_attr(data, attribute=None):
@@ -52,9 +81,8 @@ class FilterModule(object):
     @staticmethod
     def oo_collect(data, attribute=None, filters=None):
         ''' This takes a list of dict and collects all attributes specified into a
-            list. If filter is specified then we will include all items that
-            match _ALL_ of filters.  If a dict entry is missing the key in a
-            filter it will be excluded from the match.
+            list If filter is specified then we will include all items that match
+            _ALL_ of filters.
             Ex: data = [ {'a':1, 'b':5, 'z': 'z'}, # True, return
                          {'a':2, 'z': 'z'},        # True, return
                          {'a':3, 'z': 'z'},        # True, return
@@ -75,7 +103,7 @@ class FilterModule(object):
                 raise errors.AnsibleFilterError("|fialed expects filter to be a"
                                                 " dict")
             retval = [FilterModule.get_attr(d, attribute) for d in data if (
-                all([d.get(key, None) == filters[key] for key in filters]))]
+                all([d[key] == filters[key] for key in filters]))]
         else:
             retval = [FilterModule.get_attr(d, attribute) for d in data]
 
@@ -198,39 +226,15 @@ class FilterModule(object):
         return [root_vol]
 
     @staticmethod
-    def oo_split(string, separator=','):
-        ''' This splits the input string into a list
+    def select_by_name(ans_data, data):
+        ''' test
         '''
-        return string.split(separator)
-
-    @staticmethod
-    def oo_filter_list(data, filter_attr=None):
-        ''' This returns a list, which contains all items where filter_attr
-            evaluates to true
-            Ex: data = [ { a: 1, b: True },
-                         { a: 3, b: False },
-                         { a: 5, b: True } ]
-                filter_attr = 'b'
-                returns [ { a: 1, b: True },
-                          { a: 5, b: True } ]
-        '''
-        if not issubclass(type(data), list):
-            raise errors.AnsibleFilterError("|failed expects to filter on a list")
-
-        if not issubclass(type(filter_attr), str):
-            raise errors.AnsibleFilterError("|failed expects filter_attr is a str")
-
-        # Gather up the values for the list of keys passed in
-        return [x for x in data if x[filter_attr]]
-
-    @staticmethod
-    def oo_build_zabbix_list_dict(values, string):
-        ''' Build a list of dicts with string as key for each value
-        '''
-        rval = []
-        for value in values:
-            rval.append({string: value})
-        return rval
+        pdb.set_trace()
+        for zabbix_item in data:
+            if ans_data['name'] == zabbix_item:
+                data[zabbix_item]['params']['hostid'] = ans_data['templateid']
+                return data[zabbix_item]['params']
+        return None
 
     def filters(self):
         ''' returns a mapping of filters to methods '''
@@ -238,12 +242,13 @@ class FilterModule(object):
             "oo_select_keys": self.oo_select_keys,
             "oo_collect": self.oo_collect,
             "oo_flatten": self.oo_flatten,
+            "oo_len": self.oo_len,
             "oo_pdb": self.oo_pdb,
             "oo_prepend_strings_in_list": self.oo_prepend_strings_in_list,
             "oo_ami_selector": self.oo_ami_selector,
             "oo_ec2_volume_definition": self.oo_ec2_volume_definition,
             "oo_combine_key_value": self.oo_combine_key_value,
-            "oo_split": self.oo_split,
-            "oo_filter_list": self.oo_filter_list,
-            "oo_build_zabbix_list_dict": self.oo_build_zabbix_list_dict
+            "select_by_name": self.select_by_name,
+            "oo_set_zbx_item_hostid": self.oo_set_zbx_item_hostid,
+            "oo_set_zbx_trigger_triggerid": self.oo_set_zbx_trigger_triggerid,
         }
