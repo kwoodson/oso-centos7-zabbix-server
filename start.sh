@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+while true; do
+  sleep 5
+done
+
 echo user:x:$(id -u):0:USER:/root:/bin/bash >> /etc/passwd
 
 sed -ri -e "s/^DBUser=.*/DBUser=${MYSQL_USER}/g" \
