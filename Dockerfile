@@ -5,6 +5,9 @@
 
 FROM oso-rhel7-ops-base:latest
 
+RUN echo "root:redhat" | chpasswd
+
+
 # Lay down the zabbix repository
 RUN yum clean metadata && \
     yum install -y openshift-ops-yum-zabbix && \
