@@ -34,7 +34,7 @@ ADD zabbix/db_create/create_zabbix.sql /root/zabbix/
 #ADD cronroot /var/spool/cron/root
 
 # Add ansible playbooks
-ADD ansible /root/ansible/
+#ADD ansible /root/ansible/
 
 # Start mysqld, zabbix, and apache
 ADD start.sh /usr/local/bin/
